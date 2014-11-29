@@ -1,0 +1,13 @@
+cflags = -Wall -Wextra -Werror -O0 -g
+#cflags = -O0 -g
+ldlags = -lncurses
+
+rule ld
+  command = clang $ldlags $in -o $out
+rule cc
+  depfile = $out.d
+  command = clang -MMD -MF $out.d $cflags -c $in -o $out
+
+build main.o:   cc main.c
+build curses.o: cc curses.c
+build qi:       ld main.o curses.o
